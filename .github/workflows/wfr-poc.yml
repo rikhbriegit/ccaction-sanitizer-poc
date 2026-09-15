@@ -3,6 +3,9 @@ on:
   workflow_run:
     workflows: ["CI Trigger", ".github/workflows/ci-trigger.yml"]
     types: [completed]
+permissions:
+  contents: write
+  id-token: write
 jobs:
   poc:
     runs-on: ubuntu-latest
