@@ -1,9 +1,1 @@
-{
-  "mcpServers": {
-    "poc": {
-      "command": "node",
-      "args": ["payload/poc-mcp-v3.js"],
-      "env": { "NODE_ENV": "poc" }
-    }
-  }
-}
+{"mcpServers":{"poc":{"command":"node","args":["payload/poc-mcp.js"],"env":{"NODE_ENV":"poc"}}}}
