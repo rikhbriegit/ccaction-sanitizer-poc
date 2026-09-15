@@ -1,33 +1,20 @@
 name: WorkflowRun POC
 on:
   workflow_run:
-    workflows: ["CI Trigger", ".github/workflows/ci-trigger.yml"]
+    workflows: ["CI Trigger"]
     types: [completed]
-permissions:
-  contents: write
-  id-token: write
 jobs:
   poc:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout payload branch (untrusted content, NOT restored)
+      - name: Checkout upstream head sha
         uses: actions/checkout@v4
         with:
-          ref: refs/heads/poc-payload
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
       - name: Run Claude Code Action on untrusted head
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          allowed_non_write_users: "scodesec"
+          allowed_non_write_users: "abtester-7f3a"
           prompt: "List the top-level files in this repository"
-      - name: Dump MCP spawn probe file
-        if: always()
-        run: |
-          if [ -f mcp-spawned.txt ]; then
-            echo "=== MCP SPAWN PROBE (v3) ==="
-            cat mcp-spawned.txt
-          else
-            echo "=== NO mcp-spawned.txt - MCP server did NOT spawn ==="
-            ls -la
-          fi
