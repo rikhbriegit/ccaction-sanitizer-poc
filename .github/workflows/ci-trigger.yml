@@ -1,1 +1,9 @@
-name: CI Trigger`non: [push, workflow_dispatch]`njobs:`n  build:`n    runs-on: ubuntu-latest`n    steps:`n      - run: echo done
+name: CI Trigger
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo done
