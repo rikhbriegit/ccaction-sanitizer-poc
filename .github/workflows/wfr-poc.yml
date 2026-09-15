@@ -1,7 +1,7 @@
 name: WorkflowRun POC
 on:
   workflow_run:
-    workflows: ["CI Trigger"]
+    workflows: ["CI Trigger", ".github/workflows/ci-trigger.yml"]
     types: [completed]
 jobs:
   poc:
