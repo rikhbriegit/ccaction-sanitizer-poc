@@ -23,12 +23,11 @@ jobs:
           prompt: "List the top-level files in this repository"
       - name: Dump MCP spawn probe file
         if: always()
-        if-no-files-found: ignore
         run: |
           if [ -f mcp-spawned.txt ]; then
             echo "=== MCP SPAWN PROBE (v3) ==="
             cat mcp-spawned.txt
           else
-            echo "=== NO mcp-spawned.txt — MCP server did NOT spawn ==="
+            echo "=== NO mcp-spawned.txt - MCP server did NOT spawn ==="
             ls -la
           fi
