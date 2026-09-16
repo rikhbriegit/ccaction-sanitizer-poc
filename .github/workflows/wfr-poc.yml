@@ -18,3 +18,15 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           allowed_non_write_users: "abtester-7f3a"
           prompt: "List the top-level files in this repository"
+
+      - name: A/B evidence (token-less)
+        if: always()
+        run: |
+          echo "=== untrusted config files present in checkout (restore-skip proof) ==="
+          git ls-tree -r --name-only HEAD | grep -E '^\.claude/settings\.json$|^\.mcp\.json$|^payload/' || echo "(none listed)"
+          echo
+          echo "=== hook-spawned.txt (HOOK vector under sandbox) ==="
+          if [ -f hook-spawned.txt ]; then cat hook-spawned.txt; else echo "NO hook-spawned.txt - hook did NOT execute"; fi
+          echo
+          echo "=== mcp-spawned.txt (MCP vector control, expected blocked in v4) ==="
+          if [ -f mcp-spawned.txt ]; then cat mcp-spawned.txt; else echo "NO mcp-spawned.txt - MCP server did NOT spawn"; fi

