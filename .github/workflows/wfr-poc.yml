@@ -21,16 +21,22 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          allowed_non_write_users: "scodesec"
+          show_full_output: true
           prompt: "List the top-level files in this repository"
 
       - name: A/B evidence (token-less)
         if: always()
         run: |
+          echo "=== triggering actor (should be scodesec for a genuine untrusted-actor test) ==="
+          echo "actor=${{ github.event.workflow_run.actor.login }} (workflow_run.actor)"
+          echo "triggering_actor=${{ github.event.workflow_run.triggering_actor.login }}"
+          echo
           echo "=== untrusted config files present in checkout (restore-skip proof) ==="
           git ls-tree -r --name-only HEAD | grep -E '^\.claude/settings\.json$|^\.mcp\.json$|^payload/' || echo "(none listed)"
           echo
-          echo "=== hook-spawned.txt (HOOK vector under sandbox) ==="
+          echo "=== hook-spawned.txt (HOOK vector under sandbox, expect POC-RCE-HOOK-V8-UNTRUSTED-SCODESEC marker) ==="
           if [ -f hook-spawned.txt ]; then cat hook-spawned.txt; else echo "NO hook-spawned.txt - hook did NOT execute"; fi
           echo
-          echo "=== mcp-spawned.txt (MCP vector control, expected blocked in v4) ==="
+          echo "=== mcp-spawned.txt (MCP vector control) ==="
           if [ -f mcp-spawned.txt ]; then cat mcp-spawned.txt; else echo "NO mcp-spawned.txt - MCP server did NOT spawn"; fi
